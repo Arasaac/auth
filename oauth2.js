@@ -429,6 +429,8 @@ exports.token = [
       'https://beta.arasaac.org',
       'https://editor.swagger.io',
     ]
+    console.log(req.headers.origin, 'ORIGIN')
+    console.log(allow_origins, 'allow_origins')
     if (allow_origins.includes(req.headers.origin)) next()
     else res.status(401).json({ error: 'Only allowed for arasaac.org' })
   },
