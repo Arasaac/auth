@@ -428,6 +428,7 @@ exports.token = [
       'https://www.admin.arasaac.org',
       'https://beta.arasaac.org',
       'https://editor.swagger.io',
+      'https://arawrite.arasaac.org',
     ]
     console.log(req.headers.origin, 'ORIGIN')
     console.log(allow_origins, 'allow_origins')
