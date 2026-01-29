@@ -52,7 +52,7 @@ server.grant(
       .save(code, client.id, redirectURI, user.id, client.scope)
       .then(() => done(null, code))
       .catch((err) => done(err))
-  })
+  }),
 )
 
 /**
@@ -80,7 +80,7 @@ server.grant(
       .save(token, expiration, user.id, client.id, client.scope)
       .then(() => done(null, token, expiresIn))
       .catch((err) => done(err))
-  })
+  }),
 )
 
 /**
@@ -96,7 +96,7 @@ server.exchange(
     db.authorizationCodes
       .delete(code)
       .then((authCode) =>
-        validate.authCode(code, authCode, client, redirectURI)
+        validate.authCode(code, authCode, client, redirectURI),
       )
       .then((authCode) => validate.generateTokens(authCode))
       .then((tokens) => {
@@ -109,7 +109,7 @@ server.exchange(
         throw new Error('Error exchanging auth code for tokens')
       })
       .catch(() => done(null, false))
-  })
+  }),
 )
 
 /**
@@ -140,7 +140,7 @@ server.exchange(
         // active: true for old users, otherwise it's set active by activate endpoint
         const user = await User.findOneAndUpdate(
           { email: username.toLowerCase() },
-          { lastLogin: new Date(), active: true }
+          { lastLogin: new Date(), active: true },
         )
         console.log(user)
         if (!user) return done(null, false)
@@ -166,8 +166,8 @@ server.exchange(
       } catch (err) {
         return done(err)
       }
-    }
-  )
+    },
+  ),
 )
 
 /**
@@ -192,7 +192,7 @@ server.exchange(
       .save(token, expiration, null, client.id, scope)
       .then(() => done(null, token, null, expiresIn))
       .catch((err) => done(err))
-  })
+  }),
 )
 
 /**
@@ -207,12 +207,12 @@ server.exchange(
     db.refreshTokens
       .find(refreshToken)
       .then((foundRefreshToken) =>
-        validate.refreshToken(foundRefreshToken, refreshToken, client)
+        validate.refreshToken(foundRefreshToken, refreshToken, client),
       )
       .then((foundRefreshToken) => validate.generateToken(foundRefreshToken))
       .then((token) => done(null, token, null, expiresIn))
       .catch(() => done(null, false))
-  })
+  }),
 )
 
 server.exchange(
@@ -269,7 +269,7 @@ server.exchange(
         console.log(err)
         done(null, false)
       })
-  })
+  }),
 )
 
 var option = {
@@ -326,7 +326,7 @@ server.exchange(
         console.log(err)
         done(null, false)
       })
-  })
+  }),
 )
 
 /*
@@ -380,7 +380,7 @@ exports.authorization = [
             },
             (serverReq, callback) => {
               callback(null, { allow: true })
-            }
+            },
           )(req, res, next)
         } else {
           res.render('dialog', {
@@ -395,7 +395,7 @@ exports.authorization = [
           transactionID: req.oauth2.transactionID,
           user: req.user,
           client: req.oauth2.client,
-        })
+        }),
       )
   },
 ]
@@ -429,6 +429,7 @@ exports.token = [
       'https://beta.arasaac.org',
       'https://editor.swagger.io',
       'https://arawrite.arasaac.org',
+      'https://arawritev2.arasaac.org',
     ]
     console.log(req.headers.origin, 'ORIGIN')
     console.log(allow_origins, 'allow_origins')
