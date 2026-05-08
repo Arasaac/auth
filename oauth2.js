@@ -432,6 +432,7 @@ exports.token = [
       'https://arawritev2.arasaac.org',
       'https://arastudio.arasaac.org',
       'https://arastudiov2.arasaac.org',
+      'https://aractivities.arasaac.org'
     ]
     console.log(req.headers.origin, 'ORIGIN')
     console.log(allow_origins, 'allow_origins')
