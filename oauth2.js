@@ -422,21 +422,22 @@ exports.token = [
   (req, res, next) => {
     const allow_origins = [
       'http://localhost:3000',
-      'https://arasaac.org',
-      'https://www.arasaac.org',
-      'https://admin.arasaac.org',
-      'https://www.admin.arasaac.org',
-      'https://beta.arasaac.org',
-      'https://editor.swagger.io',
-      'https://arawrite.arasaac.org',
-      'https://arawritev2.arasaac.org',
-      'https://arastudio.arasaac.org',
-      'https://arastudiov2.arasaac.org',
-      'https://aractivities.arasaac.org'
+      'https://editor.swagger.io'
     ]
     console.log(req.headers.origin, 'ORIGIN')
     console.log(allow_origins, 'allow_origins')
-    if (allow_origins.includes(req.headers.origin)) next()
+    let isAllowed = allow_origins.includes(req.headers.origin)
+    if (!isAllowed && req.headers.origin) {
+      try {
+        const { hostname } = new URL(req.headers.origin)
+        if (hostname === 'arasaac.org' || hostname.endsWith('.arasaac.org')) {
+          isAllowed = true
+        }
+      } catch (e) {
+        // ignore invalid URL origins
+      }
+    }
+    if (isAllowed) next()
     else res.status(401).json({ error: 'Only allowed for arasaac.org' })
   },
   // changeHeaderAuthSecret({ clientId: 'abc123', secretId: 'ttttt' }),
